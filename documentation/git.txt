@@ -1,0 +1,6 @@
+git init
+git add .
+git commit -m "Master"
+git log
+git remote add origin https://github.com/Mersmith/backend_nestjs_mysql_chat_socket.git
+git push origin master

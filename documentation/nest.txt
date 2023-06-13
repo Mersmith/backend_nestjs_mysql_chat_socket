@@ -1,0 +1,23 @@
+$ nest new backend-realtime-chat
+
+npm run start:dev
+
+npm install --save @nestjs/typeorm typeorm pg mysql2
+
+npm i --save @nestjs/config
+
+nest generate module user
+
+npm i nestjs-typeorm-paginate --save
+
+npm i bcrypt --save
+
+npm i class-validator --save
+
+nest generate controller user/controller user --no-spec
+
+nest generate service user/service user --no-spec
+
+npm install class-transformer
+
+nest generate service user-helper
