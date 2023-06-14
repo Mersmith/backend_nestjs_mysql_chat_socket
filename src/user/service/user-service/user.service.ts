@@ -8,8 +8,6 @@ import { UserI } from 'src/user/model/user.inteface';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { AuthService } from 'src/auth/service/auth.service';
 
-const bcrypt = require('bcrypt');
-
 @Injectable()
 export class UserService {
 
@@ -69,11 +67,9 @@ export class UserService {
         );
     }
 
-
     private findByEmail(email: string): Observable<UserI> {
         return from(this.userRepository.findOne({ where: { email }, select: ['id', 'email', 'username', 'password'] }));
     }
-
 
     private validatePassword(password: string, storedPasswordHas: string): Observable<any> {
         return this.authService.comparePasswords(password, storedPasswordHas);
@@ -81,6 +77,10 @@ export class UserService {
 
     private hashPassword(password: string): Observable<string> {
         return this.authService.hashPassword(password);
+    }
+
+    public getOne(id: number): Promise<UserI> {
+        return this.userRepository.findOneOrFail({ where: { id } });
     }
 
     private mailExists(email: string): Observable<boolean> {
