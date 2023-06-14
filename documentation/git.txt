@@ -11,3 +11,10 @@ git status
 git add .
 git commit -m "Autenticación"
 git push origin 1_Auth_JWT_Passport
+
+git checkout -b 2_Auth_Middleware
+git branch
+git status
+git add .
+git commit -m "Middleware"
+git push origin 2_Auth_Middleware

@@ -24,7 +24,7 @@ export class UserController {
         )
     }
 
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
     @Get()
     findAll(
         @Query('page') page: number = 1,
@@ -34,13 +34,13 @@ export class UserController {
         return this.userService.findAll({
             page,
             limit,
-            route: 'http://localhost:3000/api/users'
+            route: process.env.BASE_URL + '/api/users'
         });
     }
 
     @Post('login')
-    login(@Body() LoginUserDto: LoginUserDto): Observable<LoginResponseI> {
-        return this.userHelperService.loginUserDtoEntity(LoginUserDto).pipe(
+    login(@Body() loginUserDto: LoginUserDto): Observable<LoginResponseI> {
+        return this.userHelperService.loginUserDtoEntity(loginUserDto).pipe(
             switchMap((user: UserI) => this.userService.login(user).pipe(
                 map((jwt: string) => {
                     return {
