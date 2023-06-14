@@ -6,13 +6,19 @@ import { map, switchMap, catchError, } from 'rxjs/operators';
 import { UserEntity } from 'src/user/model/user.entity';
 import { UserI } from 'src/user/model/user.inteface';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { AuthService } from 'src/auth/service/auth.service';
 
 const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
 
-    constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) { }
+    constructor(
+        @InjectRepository(UserEntity)
+        private readonly userRepository: Repository<UserEntity>,
+
+        private authService: AuthService
+    ) { }
 
     create(newUser: UserI): Observable<UserI> {
         return this.mailExists(newUser.email).pipe(
@@ -37,28 +43,27 @@ export class UserService {
         return from(paginate<UserEntity>(this.userRepository, options));
     }
 
-    login(user: UserI): Observable<boolean> {
+    login(user: UserI): Observable<string> {
         return this.findByEmail(user.email).pipe(
             switchMap((foundUser: UserI) => {
                 if (foundUser) {
                     return this.validatePassword(user.password, foundUser.password).pipe(
                         switchMap((matches: boolean) => {
                             if (matches) {
-                                // Se encontró un usuario y las contraseñas coinciden
-                                return of(true);
+                                return this.findOne(foundUser.id).pipe(
+                                    switchMap((payload: UserI) => this.authService.generateJwt(payload))
+                                )
+                                //return of(true);
                             } else {
-                                // Contraseña incorrecta
                                 throw new HttpException('Login was not successful, wrong credentials', HttpStatus.UNAUTHORIZED);
                             }
                         })
                     );
                 } else {
-                    // Usuario no encontrado
                     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
                 }
             }),
             catchError((error) => {
-                // Manejo de errores generales
                 throw new HttpException('Login failed', HttpStatus.INTERNAL_SERVER_ERROR);
             })
         );
@@ -69,12 +74,13 @@ export class UserService {
         return from(this.userRepository.findOne({ where: { email }, select: ['id', 'email', 'username', 'password'] }));
     }
 
+
     private validatePassword(password: string, storedPasswordHas: string): Observable<any> {
-        return from(bcrypt.compare(password, storedPasswordHas));
+        return this.authService.comparePasswords(password, storedPasswordHas);
     }
 
     private hashPassword(password: string): Observable<string> {
-        return from<string>(bcrypt.hash(password, 12));
+        return this.authService.hashPassword(password);
     }
 
     private mailExists(email: string): Observable<boolean> {

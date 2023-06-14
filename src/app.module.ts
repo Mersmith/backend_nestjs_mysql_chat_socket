@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { UserHelperService } from './user-helper/user-helper.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,9 +20,10 @@ import { UserHelperService } from './user-helper/user-helper.service';
       autoLoadEntities: true,
       synchronize: true //Solo en modo desarrollo.
     }),
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService, UserHelperService],
+  providers: [AppService],
 })
 export class AppModule { }
