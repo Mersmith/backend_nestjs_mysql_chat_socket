@@ -31,3 +31,13 @@ $ nest g controller auth --no-spec
 $ nest g service auth --no-spec
 
 npm run start:debug
+
+$ npm i --save @nestjs/websockets @nestjs/platform-socket.io
+
+npm i rxjs
+
+nest generate module chat
+
+nest generate gateway chat/socket/chat
+
+npm i socket.io
