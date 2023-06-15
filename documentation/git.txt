@@ -18,3 +18,10 @@ git status
 git add .
 git commit -m "Middleware"
 git push origin 2_Auth_Middleware
+
+git checkout -b 3_Auth_Debug
+git branch
+git status
+git add .
+git commit -m "Debug Auth y Middleware"
+git push origin 3_Auth_Debug

@@ -15,11 +15,11 @@ export class UserHelperService {
         });
     }
 
-    loginUserDtoEntity(loginUserDto: LoginUserDto): Observable<UserI> {
-        return of({
+    loginUserDtoEntity(loginUserDto: LoginUserDto): UserI {
+        return {
             email: loginUserDto.email,
             password: loginUserDto.password
-        });
+        };
     }
 
 }

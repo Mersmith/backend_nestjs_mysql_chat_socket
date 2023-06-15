@@ -10,16 +10,16 @@ export class AuthService {
     
     constructor(private readonly jwtService: JwtService) { }
 
-    generateJwt(user: UserI): Observable<string> {
-        return from(this.jwtService.signAsync({ user }));
+    generateJwt(user: UserI): Promise<string> {
+        return this.jwtService.signAsync({ user });
     }
 
     hashPassword(password: string): Observable<string> {
         return from<string>(bcrypt.hash(password, 12));
     }
 
-    comparePasswords(password: string, storedPasswordHas: string): Observable<any> {
-        return from(bcrypt.compare(password, storedPasswordHas));
+    comparePasswords(password: string, storedPasswordHas: string): Promise<any> {
+        return bcrypt.compare(password, storedPasswordHas);
     }
 
     verifyJwt(jwt: string): Promise<any>{
