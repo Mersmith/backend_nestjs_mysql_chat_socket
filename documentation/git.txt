@@ -32,3 +32,10 @@ git status
 git add .
 git commit -m "Socket comunicación con Frontend"
 git push origin 4_Socket
+
+git checkout -b 5_Socket_Chat
+git branch
+git status
+git add .
+git commit -m "Socket chat"
+git push origin 5_Socket_Chat
