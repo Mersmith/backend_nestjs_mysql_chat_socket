@@ -41,3 +41,5 @@ nest generate module chat
 nest generate gateway chat/socket/chat
 
 npm i socket.io
+
+nest generate service chat/service/room-service/room
