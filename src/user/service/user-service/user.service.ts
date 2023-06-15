@@ -41,37 +41,30 @@ export class UserService {
         return from(paginate<UserEntity>(this.userRepository, options));
     }
 
-    login(user: UserI): Observable<string> {
-        return this.findByEmail(user.email).pipe(
-            switchMap((foundUser: UserI) => {
-                if (foundUser) {
-                    return this.validatePassword(user.password, foundUser.password).pipe(
-                        switchMap((matches: boolean) => {
-                            if (matches) {
-                                return this.findOne(foundUser.id).pipe(
-                                    switchMap((payload: UserI) => this.authService.generateJwt(payload))
-                                )
-                                //return of(true);
-                            } else {
-                                throw new HttpException('Login was not successful, wrong credentials', HttpStatus.UNAUTHORIZED);
-                            }
-                        })
-                    );
-                } else {
-                    throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-                }
-            }),
-            catchError((error) => {
-                throw new HttpException('Login failed', HttpStatus.INTERNAL_SERVER_ERROR);
-            })
-        );
+    async login(user: UserI): Promise<string> {
+        try {
+          const foundUser: UserI = await this.findByEmail(user.email.toLowerCase());
+          if (foundUser) {
+            const matches: boolean = await this.validatePassword(user.password, foundUser.password);
+            if (matches) {
+              const payload: UserI = await this.findOne(foundUser.id);
+              return this.authService.generateJwt(payload);
+            } else {
+              throw new HttpException('Login was not successfull, wrong credentials', HttpStatus.UNAUTHORIZED);
+            }
+          } else {
+            throw new HttpException('Login was not successfull, wrong credentials', HttpStatus.UNAUTHORIZED);
+          }
+        } catch {
+          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+      }
+
+    private findByEmail(email: string): Promise<UserI> {
+        return this.userRepository.findOne({ where: { email }, select: ['id', 'email', 'username', 'password'] });
     }
 
-    private findByEmail(email: string): Observable<UserI> {
-        return from(this.userRepository.findOne({ where: { email }, select: ['id', 'email', 'username', 'password'] }));
-    }
-
-    private validatePassword(password: string, storedPasswordHas: string): Observable<any> {
+    private validatePassword(password: string, storedPasswordHas: string): Promise<any> {
         return this.authService.comparePasswords(password, storedPasswordHas);
     }
 
@@ -89,7 +82,7 @@ export class UserService {
         );
     }
 
-    private findOne(id: number): Observable<UserI> {
-        return from(this.userRepository.findOne({ where: { id } }));
+    private findOne(id: number): Promise<UserI> {
+        return this.userRepository.findOne({ where: { id } });
     }
 }

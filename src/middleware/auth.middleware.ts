@@ -27,10 +27,10 @@ export class AuthMiddleware implements NestMiddleware {
         req.user = user;
         next();
       } else {
-        throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+        throw new HttpException('Unauthorized User False', HttpStatus.UNAUTHORIZED);
       }
     } catch {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized catch', HttpStatus.UNAUTHORIZED);
     }
   }
 

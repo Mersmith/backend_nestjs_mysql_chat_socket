@@ -39,18 +39,14 @@ export class UserController {
     }
 
     @Post('login')
-    login(@Body() loginUserDto: LoginUserDto): Observable<LoginResponseI> {
-        return this.userHelperService.loginUserDtoEntity(loginUserDto).pipe(
-            switchMap((user: UserI) => this.userService.login(user).pipe(
-                map((jwt: string) => {
-                    return {
-                        access_token: jwt,
-                        token_type: 'JWT',
-                        expires_in: 10000
-                    }
-                })
-            ))
-        )
-    }
+    async login(@Body() loginUserDto: LoginUserDto): Promise<LoginResponseI> {
+        const userEntity: UserI = this.userHelperService.loginUserDtoEntity(loginUserDto);
+        const jwt: string = await this.userService.login(userEntity);
+        return {
+          access_token: jwt,
+          token_type: 'JWT',
+          expires_in: 10000
+        };
+      }
 
 }
