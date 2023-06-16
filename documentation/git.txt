@@ -1,0 +1,62 @@
+git init
+git add .
+git commit -m "Master"
+git log
+git remote add origin https://github.com/Mersmith/backend_nestjs_mysql_chat_socket.git
+git push origin master
+
+git checkout -b 1_Auth_JWT_Passport
+git branch
+git status
+git add .
+git commit -m "Autenticación"
+git push origin 1_Auth_JWT_Passport
+
+git checkout -b 2_Auth_Middleware
+git branch
+git status
+git add .
+git commit -m "Middleware"
+git push origin 2_Auth_Middleware
+
+git checkout -b 3_Auth_Debug
+git branch
+git status
+git add .
+git commit -m "Debug Auth y Middleware"
+git push origin 3_Auth_Debug
+
+git checkout -b 4_Socket
+git branch
+git status
+git add .
+git commit -m "Socket comunicación con Frontend"
+git push origin 4_Socket
+
+git checkout -b 5_Socket_Chat
+git branch
+git status
+git add .
+git commit -m "Socket chat"
+git push origin 5_Socket_Chat
+
+git checkout -b 6_Pagination_Socket
+git branch
+git status
+git add .
+git commit -m "Paginatio Socket Rooms"
+git push origin 6_Pagination_Socket
+
+git checkout -b 7_Refactor_Promise
+git branch
+git status
+git add .
+git commit -m "Async - Await y Search name"
+git push origin 7_Refactor_Promise
+
+git checkout -b 8_Recuperar_Luz
+git branch
+git status
+git add .
+git commit -m "Se fué la energía eléctrica."
+git push origin 8_Recuperar_Luz

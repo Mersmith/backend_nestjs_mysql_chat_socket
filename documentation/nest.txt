@@ -1,0 +1,45 @@
+$ nest new backend-realtime-chat
+
+npm run start:dev
+nest start
+
+npm install --save @nestjs/typeorm typeorm pg mysql2
+
+npm i --save @nestjs/config
+
+nest generate module user
+
+npm i nestjs-typeorm-paginate --save
+
+npm i bcrypt --save
+
+npm i class-validator --save
+
+nest generate controller user/controller user --no-spec
+
+nest generate service user/service user --no-spec
+
+npm install class-transformer
+
+nest generate service user-helper
+
+$ npm install --save @nestjs/passport passport passport-local
+$ npm install --save @nestjs/jwt passport-jwt
+
+$ nest g module auth
+$ nest g controller auth --no-spec
+$ nest g service auth --no-spec
+
+npm run start:debug
+
+$ npm i --save @nestjs/websockets @nestjs/platform-socket.io
+
+npm i rxjs
+
+nest generate module chat
+
+nest generate gateway chat/socket/chat
+
+npm i socket.io
+
+nest generate service chat/service/room-service/room
